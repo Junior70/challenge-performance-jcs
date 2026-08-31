@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="es" >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>REPORTE DE RENDIMIENTO 2026-08-31 00:30:24 - (100 TPS)</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <!-- DataTables -->
+  <link href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css" rel="stylesheet">
+  <style>
+:root{
+  --bg:#0b1020; --bg-2:#0f172a; --panel:#141b2d; --panel-2:#1b2440;
+  --border:#243049; --text:#e6ecff; --muted:#93a0c0; --muted-2:#6b7794;
+  --primary:#6366f1; --primary-2:#818cf8; --accent:#22d3ee; --teal:#2dd4bf;
+  --success:#22c55e; --warning:#f59e0b; --danger:#ef4444; --info:#38bdf8;
+  --kpi-grad-1:#6366f1; --kpi-grad-2:#22d3ee;
+  --shadow:0 10px 30px rgba(0,0,0,.45);
+  --radius:16px; --sidebar-w:248px;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+[data-theme="light"]{
+  --bg:#eef2f9; --bg-2:#ffffff; --panel:#ffffff; --panel-2:#f4f7fc;
+  --border:#e2e8f0; --text:#0f172a; --muted:#475569; --muted-2:#64748b;
+  --shadow:0 8px 24px rgba(15,23,42,.10);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--font); background:var(--bg); color:var(--text);
+  background-image:
+    radial-gradient(1200px 600px at 80% -10%, rgba(99,102,241,.18), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgba(34,211,238,.12), transparent 55%);
+  background-attachment:fixed; min-height:100vh;
+}
+a{color:var(--primary-2);text-decoration:none}
+.text-muted-2{color:var(--muted)!important}
+
+/* Sidebar */
+.app-sidebar{
+  position:fixed; top:0; left:0; width:var(--sidebar-w); height:100vh;
+  background:linear-gradient(180deg,var(--panel),var(--bg-2));
+  border-right:1px solid var(--border); padding:22px 16px; z-index:1030;
+  display:flex; flex-direction:column; gap:6px; overflow-y:auto;
+}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:18px;padding:4px 6px}
+.brand .logo{
+  width:42px;height:42px;border-radius:12px;flex:0 0 auto;
+  background:linear-gradient(135deg,var(--primary),var(--accent));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;
+  box-shadow:0 6px 18px rgba(99,102,241,.45);
+}
+.brand .title{font-weight:800;font-size:15px;line-height:1.1}
+.brand .subtitle{font-size:11px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.nav-section{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-2);margin:16px 8px 6px;font-weight:700}
+.nav-link-x{
+  position:relative;display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;
+  color:var(--muted);font-weight:600;font-size:14px;cursor:pointer;transition:.18s ease;
+  border:1px solid transparent;
+}
+.nav-link-x i{width:20px;text-align:center;font-size:15px;color:var(--muted-2);transition:.18s ease}
+.nav-link-x:hover{background:var(--panel-2);color:var(--text);transform:translateX(3px)}
+.nav-link-x:hover i{color:var(--primary-2)}
+.nav-link-x.active{
+  background:linear-gradient(135deg,rgba(99,102,241,.28),rgba(34,211,238,.13));
+  color:var(--text);border-color:rgba(99,102,241,.38);
+  box-shadow:0 8px 20px rgba(99,102,241,.22);
+}
+.nav-link-x.active i{color:var(--accent)}
+.nav-link-x.active::before{
+  content:"";position:absolute;left:-16px;top:50%;transform:translateY(-50%);
+  width:4px;height:62%;border-radius:0 4px 4px 0;
+  background:linear-gradient(180deg,var(--primary),var(--accent));
+  box-shadow:0 0 12px rgba(34,211,238,.6);
+}
+.sidebar-foot{margin-top:auto;font-size:12px;font-weight:600;color:var(--muted);padding:14px 10px 4px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.sidebar-foot i{color:var(--accent)}
+
+/* Main */
+.app-main{margin-left:var(--sidebar-w);padding:0 28px 60px}
+.topbar{
+  position:sticky;top:0;z-index:1020;display:flex;align-items:center;gap:16px;
+  padding:16px 0; margin-bottom:8px;
+  background:linear-gradient(180deg,var(--bg) 60%,transparent);
+}
+.topbar .meta{flex:1 1 auto;min-width:0}
+.topbar h1{font-size:18px;font-weight:800;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .sub{font-size:12px;color:var(--muted)}
+.status-pill{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;
+  font-weight:800;font-size:13px;letter-spacing:.04em;border:1px solid transparent;
+}
+.status-pill.ok{background:rgba(34,197,94,.14);color:#86efac;border-color:rgba(34,197,94,.35)}
+.status-pill.warn{background:rgba(245,158,11,.14);color:#fcd34d;border-color:rgba(245,158,11,.35)}
+.status-pill.fail{background:rgba(239,68,68,.14);color:#fca5a5;border-color:rgba(239,68,68,.35)}
+.icon-btn{
+  width:42px;height:42px;border-radius:12px;border:1px solid var(--border);
+  background:var(--panel);color:var(--text);cursor:pointer;font-size:16px;transition:.15s;
+}
+.icon-btn:hover{background:var(--panel-2);transform:translateY(-1px)}
+
+/* Cards / panels */
+.panel{
+  background:linear-gradient(180deg,var(--panel),var(--panel-2));
+  border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);
+}
+.panel-pad{padding:20px}
+.section{scroll-margin-top:90px;margin-bottom:26px}
+.section-head{display:flex;align-items:center;gap:12px;margin:8px 2px 16px}
+.section-head .sh-text{flex:1 1 auto;min-width:0}
+.section-head .ico{
+  width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;font-size:16px;}
+.section-head h2{font-size:17px;font-weight:800;margin:0}
+.section-head .desc{font-size:12px;color:var(--muted)}
+
+/* View selector */
+.view-selector{display:flex;align-items:center;gap:9px;flex:0 0 auto;
+  background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:8px 12px;box-shadow:var(--shadow)}
+.view-selector > i{color:var(--primary-2);font-size:13px}
+.view-selector label{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+.view-selector select{
+  appearance:none;-webkit-appearance:none;border:1px solid var(--border);border-radius:9px;
+  background:var(--panel-2);color:var(--text);font-weight:700;font-size:13px;padding:7px 30px 7px 12px;cursor:pointer;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23818cf8' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat;background-position:right 10px center;max-width:280px;transition:.15s}
+.view-selector select:hover{border-color:var(--primary)}
+.view-selector select:focus{outline:none;box-shadow:0 0 0 3px rgba(99,102,241,.25)}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.kpi{
+  position:relative;overflow:hidden;border-radius:var(--radius);padding:18px 18px 16px;
+  background:linear-gradient(180deg,var(--panel),var(--panel-2));border:1px solid var(--border);
+  box-shadow:var(--shadow);transition:transform .18s, box-shadow .18s;
+}
+.kpi:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.kpi::after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(99,102,241,.25),transparent 70%)}
+.kpi .k-ico{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;margin-bottom:12px}
+.kpi .k-label{font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.kpi .k-value{font-size:28px;font-weight:800;line-height:1.1;margin-top:4px}
+.kpi .k-sub{font-size:12px;color:var(--muted-2);margin-top:6px}
+
+/* Percentile strip */
+.perc-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
+.perc{padding:14px;border-radius:13px;background:var(--panel);border:1px solid var(--border);text-align:center}
+.perc .p-l{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.perc .p-v{font-size:20px;font-weight:800;margin-top:4px}
+.perc.hot .p-v{color:var(--warning)}
+.perc.crit .p-v{color:var(--danger)}
+
+/* Charts */
+.chart-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.chart-card{padding:16px 16px 10px;transition:transform .18s, box-shadow .18s}
+.chart-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.chart-card .c-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:4px}
+.chart-card .c-title{font-size:15px;font-weight:800}
+.chart-card .c-sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+.chart-box{width:100%;height:340px}
+.block-title{font-size:14px;font-weight:800;margin-bottom:14px}
+
+/* Mini selector (dentro de cards, p.ej. métrica del flow) */
+.mini-selector{display:flex;align-items:center;gap:7px;flex:0 0 auto}
+.mini-selector label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.mini-selector select{
+  appearance:none;-webkit-appearance:none;border:1px solid var(--border);border-radius:8px;
+  background:var(--panel-2);color:var(--text);font-weight:700;font-size:12px;padding:5px 26px 5px 10px;cursor:pointer;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23818cf8' stroke-width='3'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat;background-position:right 8px center;transition:.15s}
+.mini-selector select:hover{border-color:var(--primary)}
+.mini-selector select:focus{outline:none;box-shadow:0 0 0 3px rgba(99,102,241,.25)}
+
+/* Flow card */
+.flow-card .c-head{align-items:center}
+.flow-host{height:340px;overflow:auto;padding-top:4px}
+.flow-host::-webkit-scrollbar{width:8px}
+.flow-host::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px}
+
+/* Endpoint percentile blocks */
+.ep-block{padding:14px;border-radius:14px;border:1px solid var(--border);background:var(--panel);margin-bottom:14px}
+.ep-block:last-child{margin-bottom:0}
+.ep-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.ep-dot{width:9px;height:9px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:0 0 0 4px rgba(99,102,241,.15);flex:0 0 auto}
+.ep-name{font-size:13.5px;font-weight:800;word-break:break-all}
+.ep-badge{margin-left:auto;font-size:11px;font-weight:800;padding:5px 11px;border-radius:999px;background:rgba(99,102,241,.16);color:var(--primary-2);border:1px solid rgba(99,102,241,.3);white-space:nowrap}
+.badge-soft{font-size:10px;font-weight:800;padding:4px 9px;border-radius:999px;letter-spacing:.05em}
+.badge-real{background:rgba(34,197,94,.15);color:#86efac;border:1px solid rgba(34,197,94,.3)}
+.badge-recon{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
+.banner{
+  display:flex;gap:12px;align-items:flex-start;padding:12px 16px;border-radius:12px;
+  background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.3);color:var(--text);font-size:13px;
+}
+.banner i{color:var(--info);margin-top:2px}
+
+/* Latency lifecycle flow (guía visual de fases HTTP) */
+.flow{display:flex;flex-direction:column;max-width:100%;margin:2px auto}
+.flow-node{display:flex;align-items:center;gap:11px}
+.flow-node .ic{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;flex:0 0 auto;background:linear-gradient(135deg,var(--primary),var(--accent));box-shadow:0 6px 14px rgba(99,102,241,.3)}
+.flow-node .nm{font-weight:800;font-size:13px}
+.flow-node.edge-end .ic{background:linear-gradient(135deg,var(--teal),var(--accent))}
+.flow-edge{margin-left:16px;border-left:2px dashed var(--border);padding:5px 0 5px 26px;position:relative;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.flow-edge .ph{font-size:11.5px;color:var(--muted);font-weight:700;min-width:108px}
+.flow-edge .track{flex:1 1 90px;height:8px;border-radius:999px;background:var(--panel-2);overflow:hidden;border:1px solid var(--border)}
+.flow-edge .fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .6s ease}
+.flow-edge .ms{font-weight:800;font-size:12.5px;min-width:70px;text-align:right}
+.flow-edge.hot{border-left-color:var(--warning)}
+.flow-edge.hot .fill{background:linear-gradient(90deg,var(--warning),var(--danger))}
+.flow-edge.hot .ms{color:var(--warning)}
+.flow-edge .tag{font-size:10px;font-weight:800;color:var(--warning);white-space:nowrap;background:rgba(245,158,11,.14);border:1px solid rgba(245,158,11,.3);padding:3px 8px;border-radius:999px}
+
+/* Meta reference tooltip (referencia de latencia por entorno) */
+.meta-ref-wrap{position:relative;display:inline-flex;align-items:center;gap:8px}
+.meta-ref-btn{cursor:help;color:var(--info);font-size:11px;border:1px solid rgba(56,189,248,.35);border-radius:999px;padding:2px 10px;font-weight:800;background:rgba(56,189,248,.10);white-space:nowrap}
+.meta-ref-btn i{margin-right:5px}
+.meta-ref{position:absolute;top:150%;left:0;z-index:80;min-width:540px;padding:16px;border-radius:14px;
+  background:var(--panel);border:1px solid var(--border);box-shadow:var(--shadow);
+  opacity:0;visibility:hidden;transform:translateY(-6px);transition:.18s}
+.meta-ref-wrap:hover .meta-ref,.meta-ref-wrap:focus-within .meta-ref{opacity:1;visibility:visible;transform:none}
+.meta-ref h4{margin:0 0 3px;font-size:13.5px}
+.meta-ref .rsub{font-size:11px;color:var(--muted);margin-bottom:11px}
+.meta-ref table{width:100%;border-collapse:collapse}
+.meta-ref th,.meta-ref td{padding:7px 9px;font-size:12px;text-align:right;border-bottom:1px solid var(--border)}
+.meta-ref th:first-child,.meta-ref td:first-child{text-align:left}
+.meta-ref th{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+.meta-ref tbody tr:last-child td{border-bottom:none}
+.meta-ref .env{font-weight:800}
+.meta-ref .env .flag{font-size:10px;color:var(--muted);font-weight:700;margin-left:6px;text-transform:uppercase;letter-spacing:.04em}
+.meta-ref .rfoot{margin-top:9px;font-size:10.5px;color:var(--muted-2)}
+@media (max-width:720px){.meta-ref{min-width:300px}}
+
+/* SLA */
+.sla-summary{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px}
+.sla-chip{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:12px;border:1px solid var(--border);background:var(--panel);font-weight:700}
+.sla-chip .n{font-size:22px;font-weight:800}
+table.dt-table,table.simple{width:100%!important;color:var(--text);border-collapse:collapse}
+table.simple th,table.simple td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px;text-align:left}
+table.simple th{color:var(--muted);text-transform:uppercase;font-size:11px;letter-spacing:.06em}
+tr.row-fail{background:rgba(239,68,68,.10)}
+tr.row-fail td{color:#fca5a5;font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800}
+.pill.pass{background:rgba(34,197,94,.16);color:#86efac}
+.pill.failp{background:rgba(239,68,68,.16);color:#fca5a5}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px}
+
+/* DataTables theme overrides */
+.dataTables_wrapper{color:var(--muted);font-size:13px}
+.dataTables_wrapper .dataTables_filter input,
+.dataTables_wrapper .dataTables_length select{
+  background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:6px 10px;margin-left:6px}
+table.dataTable thead th{color:var(--muted);border-bottom:1px solid var(--border)!important;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+table.dataTable tbody td{border-top:1px solid var(--border);color:var(--text);font-size:13px}
+table.dataTable.no-footer{border-bottom:1px solid var(--border)}
+.dataTables_wrapper .dataTables_paginate .paginate_button{color:var(--muted)!important;border-radius:8px}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current{
+  background:var(--primary)!important;color:#fff!important;border:none!important}
+.dt-button{
+  background:var(--panel)!important;border:1px solid var(--border)!important;color:var(--text)!important;
+  border-radius:9px!important;font-size:12px!important;font-weight:700!important;padding:6px 12px!important}
+.dt-button:hover{background:var(--panel-2)!important}
+
+/* Groups & checks */
+.grp{border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;background:var(--panel)}
+.grp .g-name{font-weight:800;font-size:14px}
+.grp .g-path{font-size:11px;color:var(--muted-2);word-break:break-all}
+.bar-track{height:8px;border-radius:999px;background:var(--panel-2);overflow:hidden;margin-top:8px;border:1px solid var(--border)}
+.bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--success),var(--teal))}
+
+/* Errors */
+.err-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.err-card{padding:16px;border-radius:13px;border:1px solid var(--border);background:var(--panel);display:flex;gap:12px;align-items:center}
+.err-card .e-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.err-card .e-count{font-size:22px;font-weight:800}
+.err-card.crit{box-shadow:inset 0 0 0 1px rgba(239,68,68,.4)}
+
+.footer{margin-top:30px;text-align:center;color:var(--muted-2);font-size:12px}
+
+/* ===================== GLOSARIO ===================== */
+.gloss-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.gloss-search{position:relative;flex:1 1 280px;min-width:220px}
+.gloss-search i{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted-2);font-size:13px}
+.gloss-search input{width:100%;padding:11px 14px 11px 38px;border-radius:12px;border:1px solid var(--border);
+  background:var(--panel);color:var(--text);font-size:13.5px;font-weight:600;transition:.15s}
+.gloss-search input::placeholder{color:var(--muted-2);font-weight:500}
+.gloss-search input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.22)}
+.gloss-chips{display:flex;gap:8px;flex-wrap:wrap}
+.gloss-chip{border:1px solid var(--border);background:var(--panel);color:var(--muted);font-weight:700;font-size:12.5px;
+  padding:8px 14px;border-radius:999px;cursor:pointer;transition:.16s}
+.gloss-chip:hover{color:var(--text);border-color:var(--primary)}
+.gloss-chip.active{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;border-color:transparent;box-shadow:0 6px 16px rgba(99,102,241,.35)}
+
+.gloss-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;margin-bottom:22px}
+.gloss-card{position:relative;border:1px solid var(--border);border-radius:16px;padding:18px;cursor:pointer;
+  background:linear-gradient(180deg,var(--panel),var(--panel-2));box-shadow:var(--shadow);
+  transition:transform .18s, box-shadow .18s, border-color .18s;overflow:hidden}
+.gloss-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--primary),var(--accent));opacity:.85}
+.gloss-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.45);border-color:rgba(99,102,241,.4)}
+.gloss-card .g-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.gloss-card .g-ico{font-size:24px;line-height:1;flex:0 0 auto}
+.gloss-card .g-head{flex:1 1 auto;min-width:0}
+.gloss-card .g-term{font-weight:800;font-size:15px;line-height:1.2}
+.gloss-card .g-metric{display:inline-block;margin-top:4px;font-size:11px;color:var(--primary-2);
+  background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.25);padding:2px 8px;border-radius:6px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.gloss-card .g-caret{color:var(--muted-2);font-size:13px;transition:transform .2s;flex:0 0 auto}
+.gloss-card.open .g-caret{transform:rotate(180deg)}
+.gloss-card .g-tech{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:12px}
+.gloss-card .g-biz{font-size:13px;color:var(--text);line-height:1.45;
+  background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.25);border-radius:10px;padding:9px 12px}
+.gloss-card .g-biz-tag{display:inline-flex;align-items:center;gap:5px;font-weight:800;font-size:10.5px;text-transform:uppercase;
+  letter-spacing:.04em;color:#22c55e;margin-right:6px}
+.gloss-card .g-detail{max-height:0;opacity:0;overflow:hidden;transition:max-height .28s ease, opacity .2s ease, margin .28s ease}
+.gloss-card.open .g-detail{max-height:240px;opacity:1;margin-top:12px}
+.gloss-card .g-dev{font-size:12.5px;color:var(--text);line-height:1.5;
+  background:rgba(56,189,248,.10);border:1px solid rgba(56,189,248,.25);border-radius:10px;padding:9px 12px}
+.gloss-card .g-dev-tag{display:inline-flex;align-items:center;gap:5px;font-weight:800;font-size:10.5px;text-transform:uppercase;
+  letter-spacing:.04em;color:var(--info);margin-right:6px}
+
+.gloss-perc-wrap{margin-bottom:8px}
+.gloss-perc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.perc-card{border:1px solid var(--border);border-radius:14px;padding:16px;background:var(--panel);
+  border-top:3px solid var(--ac);transition:transform .16s, box-shadow .16s}
+.perc-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.perc-card .pc-ico{font-size:22px}
+.perc-card .pc-term{font-weight:800;font-size:14.5px;margin:6px 0 8px;color:var(--ac)}
+.perc-card .pc-desc{font-size:12.5px;color:var(--muted);line-height:1.5}
+.perc-card .pc-dev{font-size:12px;color:var(--text);line-height:1.45;margin-top:10px;padding-top:10px;border-top:1px dashed var(--border)}
+.perc-card .pc-dev i{color:var(--warning);margin-right:5px}
+.gloss-empty{text-align:center;color:var(--muted-2);font-size:13.5px;padding:30px 0}
+.gloss-empty i{margin-right:8px}
+
+/* ===================== RESPONSIVE ===================== */
+/* Tablets grandes / laptops chicas: 2 columnas de gráficos */
+@media (max-width:1400px){
+  .chart-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:1100px){
+  .app-sidebar{transform:translateX(-100%);transition:.25s}
+  .app-sidebar.open{transform:none}
+  .app-main{margin-left:0;padding:0 18px 50px}
+  .menu-toggle{display:inline-flex!important}
+  .topbar{padding-left:54px}
+}
+/* Tablets / móviles: 1 columna */
+@media (max-width:900px){
+  .chart-grid{grid-template-columns:1fr}
+  .chart-box{height:300px}
+  .flow-host{height:auto;max-height:none}
+  .section-head{flex-wrap:wrap}
+  .view-selector{margin-left:auto}
+}
+@media (max-width:600px){
+  .app-main{padding:0 12px 44px}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .kpi .k-value{font-size:24px}
+  .chart-box{height:270px}
+  .topbar{flex-wrap:wrap;gap:10px}
+  .topbar h1{font-size:16px;white-space:normal}
+  .view-selector{width:100%;justify-content:space-between}
+  .view-selector select{max-width:none;flex:1 1 auto}
+  .perc-strip{grid-template-columns:1fr 1fr}
+  .meta-ref{min-width:84vw;left:auto;right:0}
+  .gloss-grid{grid-template-columns:1fr}
+  .gloss-toolbar{flex-direction:column;align-items:stretch}
+  .gloss-chips{justify-content:flex-start;overflow-x:auto}
+}
+@media (max-width:420px){
+  .kpi-grid{grid-template-columns:1fr}
+}
+.menu-toggle{display:none}
+</style>
+</head>
+<body>
+
+  <button id="menu-toggle" class="icon-btn menu-toggle" style="position:fixed;top:16px;left:16px;z-index:1040">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <!-- ===================== SIDEBAR (navegación lateral) ===================== -->
+  <aside class="app-sidebar">
+    <div class="brand">
+      <div class="logo"><i class="fa-solid fa-bolt-lightning"></i></div>
+      <div>
+        <div class="title">K6 Performance</div>
+        <div class="subtitle">Enterprise Report</div>
+      </div>
+    </div>
+    <div class="nav-section">General</div>
+    <div class="nav-link-x active" data-target="sec-dashboard"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
+    <div class="nav-link-x" data-target="sec-charts"><i class="fa-solid fa-chart-line"></i> Gráficos</div>
+    <div class="nav-link-x" data-target="sec-groups"><i class="fa-solid fa-layer-group"></i> Grupos & Checks</div>
+    <div class="nav-link-x" data-target="sec-errors"><i class="fa-solid fa-bug"></i> Errores</div>
+    <div class="nav-section">Detalle</div>
+    <div class="nav-link-x" data-target="sec-sla"><i class="fa-solid fa-shield-halved"></i> Análisis SLA</div>
+    <div class="nav-link-x" data-target="sec-metrics"><i class="fa-solid fa-table-list"></i> Métricas</div>
+    <div class="nav-link-x" data-target="sec-glossary"><i class="fa-solid fa-book-open"></i> Glosario</div>
+    <div class="sidebar-foot">
+      <i class="fa-solid fa-building-columns"></i> Reporte k6
+    </div>
+  </aside>
+
+  <!-- ===================== MAIN ===================== -->
+  <main class="app-main">
+
+    <!-- Panel ejecutivo superior -->
+    <div class="topbar">
+      <div class="meta">
+        <h1 id="report-title">Reporte de Rendimiento</h1>
+        <div class="sub" id="meta-sub"></div>
+      </div>
+      <span class="status-pill ok" id="status-pill"><i class="fa-solid fa-circle-check"></i> SLA</span>
+      <button class="icon-btn" id="theme-toggle" title="Modo claro/oscuro"><i class="fa-solid fa-sun"></i></button>
+    </div>
+
+    <!-- Dashboard ejecutivo -->
+    <section class="section" id="sec-dashboard">
+      <div class="section-head">
+        <div class="ico"><i class="fa-solid fa-gauge-high"></i></div>
+        <div><h2>Dashboard</h2><div class="desc" id="status-msg">Resumen general de la ejecución</div></div>
+      </div>
+      <div class="kpi-grid" id="kpi-grid"></div>
+      <div class="panel panel-pad" style="margin-top:16px">
+        <div class="block-title"><i class="fa-solid fa-wave-square" style="color:var(--primary-2)"></i> Distribución de Tiempos de Respuesta por Endpoint</div>
+        <div id="endpoint-perc"></div>
+      </div>
+    </section>
+
+    <!-- Gráficos -->
+    <section class="section" id="sec-charts">
+      <div class="section-head">
+        <div class="ico"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="sh-text"><h2>Gráficos Interactivos</h2><div class="desc">Pase el cursor sobre los gráficos para ver el detalle · use los íconos para descargar o ver datos</div></div>
+        <div class="view-selector">
+          <i class="fa-solid fa-filter"></i>
+          <label for="endpoint-select">Vista</label>
+          <select id="endpoint-select"></select>
+        </div>
+      </div>
+      <div class="chart-grid">
+        
+      <div class="panel chart-card">
+        <div class="c-head">
+          <div>
+            <div class="c-title">Percentiles del Tiempo de Respuesta</div>
+            <div class="c-sub">http_req_duration — min, avg, p50, p90, p95, max</div>
+          </div>
+        </div>
+        <div id="chart-percentiles" class="chart-box"></div>
+      </div>
+        
+      <div class="panel chart-card">
+        <div class="c-head">
+          <div>
+            <div class="c-title">Distribución de Latencia (fases HTTP)</div>
+            <div class="c-sub">Tiempo invertido en cada fase de la petición</div>
+          </div>
+        </div>
+        <div id="chart-latency" class="chart-box"></div>
+      </div>
+        <div class="panel chart-card flow-card">
+          <div class="c-head">
+            <div>
+              <div class="c-title"><i class="fa-solid fa-diagram-project" style="color:var(--primary-2)"></i> Ciclo de Vida de la Petición HTTP</div>
+              <div class="c-sub">Recorrido de una petición y tiempo invertido en cada fase · la dominante se resalta</div>
+            </div>
+            <div class="mini-selector">
+              <label for="flow-metric">Métrica</label>
+              <select id="flow-metric">
+                <option value="avg">avg</option>
+                <option value="p50">p50 (med)</option>
+                <option value="p90">p90</option>
+                <option value="p95">p95</option>
+              </select>
+            </div>
+          </div>
+          <div id="latency-flow" class="flow-host"></div>
+        </div>
+        
+      <div class="panel chart-card">
+        <div class="c-head">
+          <div>
+            <div class="c-title">Throughput (RPS)</div>
+            <div class="c-sub">Peticiones por segundo procesadas</div>
+          </div>
+        </div>
+        <div id="chart-throughput" class="chart-box"></div>
+      </div>
+        
+      <div class="panel chart-card">
+        <div class="c-head">
+          <div>
+            <div class="c-title">Comparación por Endpoint / Escenario</div>
+            <div class="c-sub">avg · p50 · p90 · p95 por endpoint</div>
+          </div>
+        </div>
+        <div id="chart-endpoints" class="chart-box"></div>
+      </div>
+        
+      <div class="panel chart-card">
+        <div class="c-head">
+          <div>
+            <div class="c-title">Checks: HTTP vs Negocio</div>
+            <div class="c-sub">Validaciones OK / Fallidas — distingue check técnico (HTTP) y de negocio [UX]</div>
+          </div>
+        </div>
+        <div id="chart-errors" class="chart-box"></div>
+      </div>
+      </div>
+    </section>
+
+    <!-- Grupos & Checks -->
+    <section class="section" id="sec-groups">
+      <div class="section-head">
+        <div class="ico"><i class="fa-solid fa-layer-group"></i></div>
+        <div><h2>Comparación de Grupos & Checks</h2><div class="desc">Tasa de éxito por validación de negocio (ordenado por peor desempeño)</div></div>
+      </div>
+      <div class="panel panel-pad" id="groups-list"></div>
+    </section>
+
+    <!-- Errores -->
+    <section class="section" id="sec-errors">
+      <div class="section-head">
+        <div class="ico"><i class="fa-solid fa-bug"></i></div>
+        <div><h2>Análisis de Errores</h2><div class="desc">Total API errors: <b id="err-total">0</b></div></div>
+      </div>
+      <div class="err-grid" id="err-grid"></div>
+    </section>
+
+    <!-- SLA -->
+    <section class="section" id="sec-sla">
+      <div class="section-head">
+        <div class="ico"><i class="fa-solid fa-shield-halved"></i></div>
+        <div><h2>Análisis de SLA (Thresholds)</h2><div class="desc">PASS / FAIL automático con incumplimientos resaltados</div></div>
+      </div>
+      <div class="sla-summary" id="sla-summary"></div>
+      <div class="panel panel-pad">
+        <table class="simple">
+          <thead><tr><th>Métrica</th><th>Condición (Threshold)</th><th>Resultado</th></tr></thead>
+          <tbody id="sla-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Métricas (DataTable) -->
+    <section class="section" id="sec-metrics">
+      <div class="section-head">
+        <div class="ico"><i class="fa-solid fa-table-list"></i></div>
+        <div><h2>Tabla Detallada de Métricas</h2><div class="desc">Búsqueda, ordenamiento y exportación (CSV / Excel / Copiar)</div></div>
+      </div>
+      <div class="panel panel-pad">
+        <table id="metrics-table" class="dt-table display" style="width:100%">
+          <thead>
+            <tr>
+              <th>Métrica</th><th>Tipo</th><th>Avg</th><th>Min</th><th>Med</th><th>Max</th>
+              <th>P90</th><th>P95</th><th>Count</th><th>Rate</th><th>SLA</th>
+            </tr>
+          </thead>
+          <tbody id="metrics-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Glosario para Negocio y Desarrollo -->
+    <section class="section" id="sec-glossary">
+      <div class="section-head">
+        <div class="ico"><i class="fa-solid fa-book-open"></i></div>
+        <div class="sh-text"><h2>Glosario para Negocio y Desarrollo</h2><div class="desc">Qué significa cada métrica en lenguaje técnico y de negocio · haga clic en una tarjeta para ver detalle y ejemplos</div></div>
+      </div>
+      <div class="gloss-toolbar">
+        <div class="gloss-search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="gloss-search" type="text" placeholder="Buscar término (ej. latencia, p95, conexión)…" autocomplete="off">
+        </div>
+        <div class="gloss-chips" id="gloss-chips"></div>
+      </div>
+      <div class="gloss-grid" id="glossary-grid"></div>
+      <div class="panel panel-pad gloss-perc-wrap">
+        <div class="block-title"><i class="fa-solid fa-chart-simple" style="color:var(--primary-2)"></i> ¿Qué significan los percentiles?</div>
+        <div class="gloss-perc" id="glossary-perc"></div>
+      </div>
+      <div class="gloss-empty" id="gloss-empty" style="display:none">
+        <i class="fa-solid fa-magnifying-glass-minus"></i> No se encontraron términos para su búsqueda.
+      </div>
+    </section>
+
+    <div class="footer">
+      Generado por <b>K6 Performance Report Reporte k6</b>
+    </div>
+  </main>
+
+  <!-- ===================== Datos embebidos (JSON nativo de k6) ===================== -->
+  <script id="k6-data" type="application/json">{"options":{"summaryTrendStats":["avg","min","med","max","p(90)","p(95)"],"summaryTimeUnit":"","noColor":false},"state":{"isStdErrTTY":true,"testRunDurationMs":60625.6692,"isStdOutTTY":true},"metrics":{"http_req_connecting":{"type":"trend","contains":"time","values":{"avg":1.3231246888664643,"min":0,"med":0,"max":82.1398,"p(90)":0,"p(95)":0}},"http_req_duration":{"values":{"avg":226.99705731584223,"min":201.2523,"med":210.6119,"max":1570.9293,"p(90)":235.9442,"p(95)":262.51577499999996},"type":"trend","contains":"time"},"checks":{"type":"rate","contains":"default","values":{"rate":0.6507989907485282,"passes":7738,"fails":4152}},"vus_max":{"type":"gauge","contains":"default","values":{"value":103,"min":50,"max":103}},"http_req_duration{name:login_endpoint}":{"type":"trend","contains":"time","values":{"min":249.6011,"med":249.6011,"max":249.6011,"p(90)":249.6011,"p(95)":249.6011,"avg":249.6011},"thresholds":{"p(95)\u003c1000":{"ok":true}}},"http_req_duration{expected_response:true}":{"type":"trend","contains":"time","values":{"p(95)":264.0125949999999,"avg":233.40036860465096,"min":201.2523,"med":210.66805,"max":1570.9293,"p(90)":235.24653999999998}},"data_received":{"type":"counter","contains":"data","values":{"count":3368641,"rate":55564.59902961368}},"iterations":{"values":{"count":5945,"rate":98.06077324091625},"type":"counter","contains":"default"},"http_req_receiving":{"type":"trend","contains":"time","values":{"p(95)":1.06555,"avg":0.5935798351833168,"min":0,"med":0,"max":366.5064,"p(90)":0.8572500000000001}},"http_req_duration{name:create_product_endpoint}":{"type":"trend","contains":"time","values":{"med":210.6115,"max":1570.9293,"p(90)":235.88478000000003,"p(95)":262.51992,"avg":226.99325512195088,"min":201.2523},"thresholds":{"p(95)\u003c2000":{"ok":true}}},"data_sent":{"type":"counter","contains":"data","values":{"count":921813,"rate":15204.995048533006}},"iteration_duration":{"type":"trend","contains":"time","values":{"avg":229.83827825063062,"min":201.2523,"med":210.8058,"max":1570.9293,"p(90)":241.35856,"p(95)":269.66612000000003}},"http_reqs":{"type":"counter","contains":"default","values":{"count":5946,"rate":98.0772679042032}},"http_req_failed":{"values":{"rate":0.3491422805247225,"passes":2076,"fails":3870},"thresholds":{"rate\u003c0.01":{"ok":false}},"type":"rate","contains":"default"},"http_req_waiting":{"type":"trend","contains":"time","values":{"avg":226.23332534477024,"min":200.4703,"med":210.23755,"max":1570.4065,"p(90)":233.44385,"p(95)":260.9489}},"http_req_blocked":{"contains":"time","values":{"avg":2.7765310460813994,"min":0,"med":0,"max":169.385,"p(90)":0,"p(95)":0},"type":"trend"},"http_req_tls_handshaking":{"type":"trend","contains":"time","values":{"p(95)":0,"avg":1.4516963336696935,"min":0,"med":0,"max":92.0693,"p(90)":0}},"http_req_sending":{"contains":"time","values":{"p(95)":0.585375,"avg":0.17015213588967373,"min":0,"med":0,"max":1.7409,"p(90)":0.52675},"type":"trend"},"vus":{"type":"gauge","contains":"default","values":{"value":26,"min":21,"max":62}}},"setup_data":{"token":null},"metadata_entorno":{"fecha_reporte":"2026-08-31 00:30:24"},"root_group":{"name":"","path":"","id":"d41d8cd98f00b204e9800998ecf8427e","groups":[],"checks":[{"path":"::Status es 200 o 201","id":"ab6580ee48b77f23ac6c7b84b139d281","passes":3869,"fails":2076,"name":"Status es 200 o 201"},{"id":"c2f8cb9bc394b973f939410f9b32005d","passes":3869,"fails":2076,"name":"Contiene ID","path":"::Contiene ID"}]}}</script>
+
+  <!-- ===================== Librerías (CDN) ===================== -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+
+  <!-- ===================== App (parser + charts + app) ===================== -->
+  <script>
+    document.getElementById('report-title').textContent = "REPORTE DE RENDIMIENTO 2026-08-31 00:30:24 - (100 TPS)";
+  </script>
+  <script>
+(function(){
+  'use strict';
+
+  var RAW = {};
+  try { RAW = JSON.parse(document.getElementById('k6-data').textContent); }
+  catch(e){ console.error('No se pudo parsear el JSON de k6', e); }
+
+  // ===================== FORMAT HELPERS =====================
+  var F = {
+    num: function(n){
+      if(n==null || isNaN(n)) return '0';
+      var p = n.toString().split('.');
+      p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return p.join('.');
+    },
+    ms: function(n){
+      if(n==null || isNaN(n)) return 'N/A';
+      if(n < 1) return (n*1000).toFixed(0)+' µs';
+      if(n < 1000) return n.toFixed(2)+' ms';
+      return (n/1000).toFixed(2)+' s';
+    },
+    dur: function(ms){
+      if(ms==null||isNaN(ms)) return 'N/A';
+      var s=Math.floor(ms/1000), m=Math.floor(s/60), h=Math.floor(m/60);
+      var rm=m%60, rs=s%60;
+      if(h>0) return h+'h '+rm+'m '+rs+'s';
+      if(m>0) return m+'m '+rs+'s';
+      return s+'.'+Math.floor((ms%1000)/100)+'s';
+    },
+    bytes: function(b){
+      if(b==null||isNaN(b)) return '0 B';
+      if(b<1024) return b+' B';
+      if(b<1048576) return (b/1024).toFixed(2)+' KB';
+      if(b<1073741824) return (b/1048576).toFixed(2)+' MB';
+      return (b/1073741824).toFixed(2)+' GB';
+    },
+    rate: function(r){ return (r==null?0:r).toFixed(2)+' /s'; },
+    pct: function(p){ return (p==null||isNaN(p)?0:p).toFixed(2)+'%'; }
+  };
+  function pick(values, keys){
+    if(!values) return null;
+    for(var i=0;i<keys.length;i++){ if(values[keys[i]]!=null) return values[keys[i]]; }
+    return null;
+  }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  // ===================== PARSER (dinámico) =====================
+  var Parser = (function(){
+    function parse(raw){
+      var metrics = raw.metrics || {};
+      var base = {}, tagged = [];
+      // Clasificar y separar métricas base de métricas con tags
+      Object.keys(metrics).forEach(function(key){
+        var m = metrics[key];
+        var mt = key.match(/^(.+?)\{(.+)\}$/);
+        if(mt){
+          var tagsRaw = mt[2];
+          var tagObj = {};
+          tagsRaw.split(',').forEach(function(kv){
+            var idx = kv.indexOf(':');
+            if(idx>-1) tagObj[kv.slice(0,idx)] = kv.slice(idx+1);
+          });
+          tagged.push({ key:key, base:mt[1], tags:tagObj, metric:m });
+        } else {
+          base[key] = m;
+        }
+      });
+
+      // Tabla genérica de TODAS las métricas (se adapta a lo que exista)
+      var table = [];
+      Object.keys(metrics).forEach(function(key){
+        var m = metrics[key] || {}, v = m.values || {};
+        table.push({
+          name:key, type:m.type||'-', contains:m.contains||'-',
+          avg: v.avg!=null?v.avg:null,
+          min: v.min!=null?v.min:null,
+          med: pick(v,['med','p(50)']),
+          max: v.max!=null?v.max:null,
+          p90: v['p(90)']!=null?v['p(90)']:null,
+          p95: v['p(95)']!=null?v['p(95)']:null,
+          count: v.count!=null?v.count:null,
+          rate: v.rate!=null?v.rate:null,
+          value: v.value!=null?v.value:null,
+          passes: v.passes!=null?v.passes:null,
+          fails: v.fails!=null?v.fails:null,
+          hasThreshold: !!m.thresholds
+        });
+      });
+
+      // Percentiles del tiempo de respuesta principal
+      var d = (metrics.http_req_duration && metrics.http_req_duration.values) || {};
+      var perc = {
+        min: d.min, avg: d.avg, p50: pick(d,['med','p(50)']),
+        p90: d['p(90)'], p95: d['p(95)'], max: d.max
+      };
+
+      // Desglose de fases (waterfall de latencia) — por endpoint o general
+      var PHASE_DEFS = [
+        {key:'http_req_blocked', label:'Blocked'},
+        {key:'http_req_connecting', label:'Connecting'},
+        {key:'http_req_tls_handshaking', label:'TLS'},
+        {key:'http_req_sending', label:'Sending'},
+        {key:'http_req_waiting', label:'Waiting (TTFB)'},
+        {key:'http_req_receiving', label:'Receiving'}
+      ];
+      function phasesFor(epLabel){
+        return PHASE_DEFS.map(function(p){
+          var taggedKey = 'http_req_'+p.key.replace('http_req_','')+'{endpoint:'+epLabel+'}';
+          var mv;
+          if(epLabel && metrics[p.key+'{endpoint:'+epLabel+'}']) mv = metrics[p.key+'{endpoint:'+epLabel+'}'].values||{};
+          else mv = (metrics[p.key]&&metrics[p.key].values)||{};
+          return {label:p.label, avg:mv.avg||0, p50:pick(mv,['med','p(50)'])||0, p90:mv['p(90)']||0, p95:mv['p(95)']||0};
+        });
+      }
+      var phases = phasesFor(null);
+
+      // Endpoints / escenarios (cualquier tag) — foco en http_req_duration
+      var epMap = {};
+      tagged.forEach(function(t){
+        if(t.base!=='http_req_duration') return;
+        var label = t.tags.endpoint || t.tags.scenario || t.tags.name || t.tags.group;
+        if(!label) return; // ignora sub-métricas internas de k6 (p.ej. expected_response:true)
+        var v = t.metric.values||{};
+        epMap[label] = {
+          label: label, avg:v.avg||0, p90:v['p(90)']||0, p95:v['p(95)']||0,
+          max:v.max||0, min:v.min||0, med:pick(v,['med','p(50)'])||0,
+          count: null, rate: null, thresholds: t.metric.thresholds||null
+        };
+      });
+      // Conteo / rate de requests por endpoint (si existe http_reqs{endpoint:...})
+      tagged.forEach(function(t){
+        if(t.base!=='http_reqs') return;
+        var label = t.tags.endpoint || t.tags.scenario || t.tags.name || t.tags.group;
+        if(label && epMap[label]){
+          epMap[label].count = (t.metric.values&&t.metric.values.count)||null;
+          epMap[label].rate = (t.metric.values&&t.metric.values.rate)||null;
+        }
+      });
+      var endpoints = Object.keys(epMap).map(function(k){return epMap[k];});
+
+      // Thresholds (SLA)
+      var thresholds = [];
+      Object.keys(metrics).forEach(function(key){
+        var th = metrics[key].thresholds;
+        if(!th) return;
+        Object.keys(th).forEach(function(cond){
+          thresholds.push({ metric:key, condition:cond, ok: th[cond].ok!==false });
+        });
+      });
+
+      // Errores por tipo (api_errors_total{error_type:X}) — genérico
+      var errors = [];
+      tagged.forEach(function(t){
+        if(t.base!=='api_errors_total' || !t.tags.error_type) return;
+        var v = t.metric.values||{};
+        errors.push({
+          type:t.tags.error_type, count:v.count||0,
+          ok:(t.metric.thresholds && t.metric.thresholds['count==0']) ? t.metric.thresholds['count==0'].ok!==false : (v.count||0)===0
+        });
+      });
+      var totalApiErrors = (metrics.api_errors_total && metrics.api_errors_total.values && metrics.api_errors_total.values.count) || 0;
+
+      // Checks + grupos (recursivo, sin asumir profundidad)
+      var checks = [], groups = [];
+      function classifyCheck(name){
+        var n = (name||'').toLowerCase();
+        if(/\[ux\]/.test(n) || /negocio/.test(n)) return 'business';
+        if(n.indexOf('http ')===0 || /status\s*ok/.test(n) || /:\s*status/.test(n)) return 'http';
+        if((name||'').charAt(0)==='[') return 'business';
+        return 'other';
+      }
+      (function walk(g, depth){
+        if(!g) return;
+        if(g.name){
+          groups.push({ name:g.name, path:g.path||'', depth:depth, checks:(g.checks||[]).length });
+        }
+        (g.checks||[]).forEach(function(c){
+          var total=(c.passes||0)+(c.fails||0);
+          var parts=(c.path||'').split('::'); parts.pop();
+          checks.push({ name:c.name, path:c.path||'', passes:c.passes||0, fails:c.fails||0,
+            total:total, rate: total>0?(c.passes/total*100):0,
+            kind: classifyCheck(c.name), groupPath: parts.join('::') });
+        });
+        (g.groups||[]).forEach(function(child){ walk(child, depth+1); });
+      })(raw.root_group, 0);
+
+      // Asociar checks a cada endpoint (mismo grupo que el check HTTP que contiene el label del endpoint)
+      var checksByEndpoint = {};
+      endpoints.forEach(function(e){
+        var anchor = checks.filter(function(c){ return c.name && c.name.indexOf(e.label)>-1; })[0];
+        checksByEndpoint[e.label] = anchor
+          ? checks.filter(function(c){ return c.groupPath===anchor.groupPath; })
+          : [];
+      });
+
+      // KPIs
+      var reqs = (metrics.http_reqs && metrics.http_reqs.values) || {};
+      var failed = (metrics.http_req_failed && metrics.http_req_failed.values) || {};
+      var iter = (metrics.iterations && metrics.iterations.values) || {};
+      var chk = (metrics.checks && metrics.checks.values) || {};
+      var kpi = {
+        totalRequests: reqs.count||0,
+        rps: reqs.rate||0,
+        durationMs: (raw.state && raw.state.testRunDurationMs) || 0,
+        errorRate: (failed.rate!=null?failed.rate:0)*100,
+        vusMax: (metrics.vus&&metrics.vus.values&&metrics.vus.values.max) ||
+                (metrics.vus&&metrics.vus.values&&metrics.vus.values.max) || 0,
+        iterations: iter.count||0,
+        iterRate: iter.rate||0,
+        checksRate: (chk.rate!=null?chk.rate:0)*100,
+        checksPasses: chk.passes||0, checksFails: chk.fails||0,
+        dataSent: (metrics.data_sent&&metrics.data_sent.values&&metrics.data_sent.values.count)||0,
+        dataRecv: (metrics.data_received&&metrics.data_received.values&&metrics.data_received.values.count)||0,
+        dataRecvRate: (metrics.data_received&&metrics.data_received.values&&metrics.data_received.values.rate)||0
+      };
+
+      // Estado global / SLA
+      var failedTh = thresholds.filter(function(t){return !t.ok;}).length;
+      var status = 'ok', statusMsg = 'Todos los SLA dentro de los umbrales esperados';
+      if(totalApiErrors>0 || failedTh>0 || kpi.errorRate>0){
+        status='fail'; statusMsg='Se detectaron incumplimientos de SLA o errores que requieren atención';
+      } else if(kpi.checksRate < 99 && kpi.checksRate>0){
+        status='warn'; statusMsg='Algunas validaciones no alcanzaron el 99% de éxito';
+      }
+
+      // Vistas seleccionables: General + una por cada endpoint
+      var views = [{
+        id:'__ALL__', label:'General (todos los endpoints)',
+        duration:{ min:perc.min, avg:perc.avg, med:perc.p50, p90:perc.p90, p95:perc.p95, max:perc.max },
+        phases: phasesFor(null), rate: kpi.rps, count: kpi.totalRequests, checks: checks
+      }];
+      endpoints.forEach(function(e){
+        var epDurMs = (kpi.durationMs||0)/1000;
+        var derivedRate = (e.rate!=null) ? e.rate : (e.count!=null && epDurMs>0 ? e.count/epDurMs : null);
+        views.push({
+          id:e.label, label:e.label,
+          duration:{ min:e.min, avg:e.avg, med:e.med, p90:e.p90, p95:e.p95, max:e.max },
+          phases: phasesFor(e.label), rate: derivedRate, count:e.count,
+          checks: checksByEndpoint[e.label] || []
+        });
+      });
+
+      return {
+        meta: raw.metadata_entorno || {},
+        options: raw.options || {},
+        kpi:kpi, perc:perc, phases:phases, endpoints:endpoints, views:views,
+        thresholds:thresholds, errors:errors, totalApiErrors:totalApiErrors,
+        checks:checks, groups:groups, table:table,
+        status:status, statusMsg:statusMsg,
+        passedTh: thresholds.length-failedTh, failedTh:failedTh, totalTh:thresholds.length
+      };
+    }
+    return { parse:parse };
+  })();
+
+  // ===================== CHARTS (ECharts) =====================
+  var Charts = (function(){
+    var instances = [];
+    var TIP_BG = 'rgba(15,23,42,.96)';
+    function theme(){
+      var light = document.documentElement.getAttribute('data-theme')==='light';
+      return {
+        axis: light?'#475569':'#aab6d6',
+        split: light?'#e9eef7':'#26324d',
+        text: light?'#0f172a':'#e6ecff',
+        tipBg: light?'rgba(255,255,255,.98)':TIP_BG,
+        tipBorder: light?'#e2e8f0':'#33415f',
+        barBg: light?'rgba(99,102,241,.06)':'rgba(129,140,248,.07)'
+      };
+    }
+    function mk(id, option){
+      var dom = document.getElementById(id);
+      if(!dom) return;
+      var ch = echarts.init(dom, null, {renderer:'canvas'});
+      option.animationDuration = 900;
+      option.animationEasing = 'cubicOut';
+      ch.setOption(option);
+      instances.push({ch:ch, id:id});
+      return ch;
+    }
+    function toolbox(t){
+      return {right:14, top:6, itemSize:14, itemGap:9,
+        iconStyle:{borderColor:t.axis}, emphasis:{iconStyle:{borderColor:'#6366f1'}},
+        feature:{
+          dataView:{readOnly:true, title:'Ver datos', lang:['Datos','Cerrar','Actualizar'],
+            backgroundColor:t.tipBg, textColor:t.text},
+          saveAsImage:{title:'Descargar PNG', name:'k6-chart', pixelRatio:2, backgroundColor:t.tipBg},
+          restore:{title:'Restaurar'}
+        }};
+    }
+    function tip(t, suffix){
+      return {trigger:'axis', backgroundColor:t.tipBg, borderColor:t.tipBorder,
+        textStyle:{color:t.text}, axisPointer:{type:'shadow'},
+        valueFormatter:function(v){return v==null?'N/A':(Number(v).toFixed(2)+(suffix||''));}};
+    }
+    function vGrid(){ return {left:70, right:30, top:58, bottom:46}; }
+    function hGrid(){ return {left:130, right:64, top:30, bottom:34}; }
+    function vAxisX(t, data, rotate){
+      return {type:'category', data:data, axisTick:{show:false},
+        axisLabel:{color:t.axis, interval:0, rotate:rotate||0, hideOverlap:true},
+        axisLine:{lineStyle:{color:t.split}}};
+    }
+    function vAxisY(t, name){
+      return {type:'value', name:name||'ms', nameGap:16, nameLocation:'end',
+        nameTextStyle:{color:t.axis, fontSize:11, padding:[0,0,0,-30]},
+        axisLabel:{color:t.axis, margin:14, formatter:function(v){
+          if(v>=1000) return (v/1000)+'k'; return v;
+        }},
+        splitLine:{lineStyle:{color:t.split, type:'dashed'}}};
+    }
+    function barLabel(t, suffix){
+      return {show:true, position:'top', color:t.text, fontSize:11, fontWeight:600,
+        formatter:function(p){ return p.value==null?'':(Number(p.value).toFixed(p.value<10?2:1)+(suffix||'')); }};
+    }
+
+    // Diagrama vertical del ciclo de vida HTTP a partir de las fases reales (avg/p90/p95)
+    var flowState = { ph:[], metric:'avg' };
+    function renderLatencyFlow(ph, t, metric){
+      var host = document.getElementById('latency-flow');
+      if(!host) return;
+      if(ph) flowState.ph = ph;
+      if(metric) flowState.metric = metric;
+      ph = flowState.ph; metric = flowState.metric || 'avg';
+      var STEPS = [
+        {node:'Cliente', icon:'fa-laptop'},
+        {phase:'Blocked'},
+        {node:'Conexión TCP', icon:'fa-network-wired'},
+        {phase:'Connecting'},
+        {node:'Handshake TLS', icon:'fa-lock'},
+        {phase:'TLS'},
+        {node:'Servidor', icon:'fa-server'},
+        {phase:'Sending'},
+        {node:'Procesamiento Backend', icon:'fa-gears'},
+        {phase:'Waiting (TTFB)'},
+        {node:'Respuesta', icon:'fa-paper-plane'},
+        {phase:'Receiving'},
+        {node:'Cliente recibe respuesta', icon:'fa-circle-check', end:true}
+      ];
+      function phVal(label){
+        var hit = (ph||[]).filter(function(p){ return p.label===label || p.label.indexOf(label)===0; })[0];
+        return hit ? (Number(hit[metric])||0) : 0;
+      }
+      var maxV = 0;
+      (ph||[]).forEach(function(p){ var x=Number(p[metric])||0; if(x>maxV) maxV=x; });
+      var html = '<div class="flow">';
+      STEPS.forEach(function(s){
+        if(s.node){
+          html += '<div class="flow-node'+(s.end?' edge-end':'')+'">'+
+            '<div class="ic"><i class="fa-solid '+s.icon+'"></i></div>'+
+            '<div class="nm">'+esc(s.node)+'</div></div>';
+        } else {
+          var v = phVal(s.phase);
+          var pct = maxV>0 ? Math.max(2, Math.round(v/maxV*100)) : 0;
+          var hot = (maxV>0 && v===maxV && v>0);
+          html += '<div class="flow-edge'+(hot?' hot':'')+'">'+
+            '<span class="ph">'+esc(s.phase)+'</span>'+
+            '<span class="track"><span class="fill" style="width:'+pct+'%"></span></span>'+
+            '<span class="ms">'+v.toFixed(2)+' ms</span>'+
+            (hot?'<span class="tag"><i class="fa-solid fa-arrow-left"></i> casi todo el tiempo</span>':'')+
+            '</div>';
+        }
+      });
+      html += '</div>';
+      host.innerHTML = html;
+    }
+    function rerenderFlow(metric){ renderLatencyFlow(null, null, metric); }
+
+    function render(A, viewId){
+      instances = [];
+      var t = theme();
+      var PURPLE='#818cf8', INDIGO='#6366f1', CYAN='#22d3ee', TEAL='#2dd4bf', AMBER='#f59e0b', RED='#ef4444', GREEN='#22c55e';
+      var views = A.views || [];
+      var view = views.filter(function(v){return v.id===viewId;})[0] || views[0] || {duration:A.perc, phases:A.phases, rate:A.kpi.rps};
+      var isAll = !view || view.id==='__ALL__';
+
+      // 1. Percentiles del tiempo de respuesta (según vista)
+      var dur = view.duration || {};
+      mk('chart-percentiles', {
+        tooltip:tip(t,' ms'), toolbox:toolbox(t), grid:vGrid(),
+        xAxis:vAxisX(t,['Min','Avg','P50','P90','P95','Max']),
+        yAxis:vAxisY(t,'ms'),
+        series:[{type:'bar', barWidth:'55%', name:'Tiempo de respuesta',
+          label:barLabel(t,''),
+          emphasis:{focus:'series', itemStyle:{shadowBlur:12, shadowColor:'rgba(99,102,241,.5)'}},
+          itemStyle:{borderRadius:[6,6,0,0], color:new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:INDIGO},{offset:1,color:CYAN}])},
+          data:[dur.min,dur.avg,dur.med,dur.p90,dur.p95,dur.max].map(function(x){return x==null?null:Number(x.toFixed(2));})}]
+      });
+
+      // 2. Distribución de latencia (fases HTTP) (según vista) — avg, p50 (med), p90, p95
+      var ph = view.phases || A.phases;
+      mk('chart-latency', {
+        tooltip:tip(t,' ms'), toolbox:toolbox(t),
+        legend:{data:['avg','p50 (med)','p90','p95'], textStyle:{color:t.axis}, top:0, right:120},
+        grid:hGrid(),
+        xAxis:{type:'value', name:'ms', nameTextStyle:{color:t.axis}, axisLabel:{color:t.axis}, splitLine:{lineStyle:{color:t.split, type:'dashed'}}},
+        yAxis:{type:'category', data:ph.map(function(p){return p.label;}), axisTick:{show:false}, axisLabel:{color:t.axis}, axisLine:{lineStyle:{color:t.split}}},
+        series:[
+          {name:'avg', type:'bar', itemStyle:{color:INDIGO, borderRadius:[0,5,5,0]}, emphasis:{focus:'series'},
+            data:ph.map(function(p){return Number(p.avg.toFixed(2));})},
+          {name:'p50 (med)', type:'bar', itemStyle:{color:TEAL, borderRadius:[0,5,5,0]}, emphasis:{focus:'series'},
+            data:ph.map(function(p){return Number((p.p50||0).toFixed(2));})},
+          {name:'p90', type:'bar', itemStyle:{color:AMBER, borderRadius:[0,5,5,0]}, emphasis:{focus:'series'},
+            data:ph.map(function(p){return Number(p.p90.toFixed(2));})},
+          {name:'p95', type:'bar', itemStyle:{color:CYAN, borderRadius:[0,5,5,0]}, emphasis:{focus:'series'},
+            data:ph.map(function(p){return Number(p.p95.toFixed(2));})}
+        ]
+      });
+
+      // 2b. Guía visual: ciclo de vida de la petición (usa avg real de cada fase)
+      renderLatencyFlow(ph, t, flowState.metric);
+
+      // 3. Throughput gauge (según vista)
+      var rate = (view.rate!=null) ? view.rate : (A.kpi.rps||0);
+      var gmax = Math.max(5, Math.ceil((rate||1)*1.6));
+      mk('chart-throughput', {
+        toolbox:toolbox(t),
+        series:[{type:'gauge', startAngle:210, endAngle:-30, min:0, max:gmax, radius:'92%', center:['50%','58%'],
+          progress:{show:true, width:18, itemStyle:{color:new echarts.graphic.LinearGradient(0,0,1,0,[{offset:0,color:INDIGO},{offset:1,color:CYAN}])}},
+          axisLine:{lineStyle:{width:18, color:[[1,t.split]]}},
+          axisTick:{show:false}, splitLine:{length:12, lineStyle:{color:t.split, width:2}},
+          axisLabel:{color:t.axis, fontSize:10, distance:22},
+          pointer:{itemStyle:{color:INDIGO}}, anchor:{show:true, size:14, itemStyle:{color:INDIGO}},
+          detail:{valueAnimation:true, formatter:'{value}\nreq/s', color:t.text, fontSize:26, fontWeight:'bolder', lineHeight:24, offsetCenter:[0,'34%']},
+          title:{show:false},
+          data:[{value:Number((rate||0).toFixed(2))}]}]
+      });
+
+      // 4. Comparación por Endpoint / Escenario (REAL) — avg, p50, p90, p95
+      // Al seleccionar un endpoint en el selector, se muestra SOLO ese endpoint.
+      var hasEp = A.endpoints && A.endpoints.length>0;
+      var srcAll = hasEp ? A.endpoints : [{label:'http_req_duration', avg:dur.avg||0, med:dur.med||0, p90:dur.p90||0, p95:dur.p95||0}];
+      var src = isAll ? srcAll : srcAll.filter(function(e){return e.label===viewId;});
+      if(src.length===0) src = srcAll;
+      var epLabels = src.map(function(e){return e.label;});
+      var rotate = epLabels.length>3 ? 18 : 0;
+      function s(name,color,key){
+        return {name:name, type:'bar', itemStyle:{color:color, borderRadius:[4,4,0,0]}, emphasis:{focus:'series'},
+          showBackground:true, backgroundStyle:{color:t.barBg, borderRadius:[4,4,0,0]},
+          barMaxWidth: src.length===1 ? 64 : null,
+          label: src.length<=2 ? {show:true, position:'top', color:t.text, fontSize:11, fontWeight:700,
+            formatter:function(p){ return Number(p.value).toFixed(p.value<10?2:1); }} : {show:false},
+          data:src.map(function(e){ return Number((e[key]||0).toFixed(2)); })}; }
+      mk('chart-endpoints', {
+        tooltip:tip(t,' ms'), toolbox:toolbox(t),
+        legend:{data:['avg','p50','p90','p95'], textStyle:{color:t.axis}, top:0, right:120},
+        grid:vGrid(),
+        xAxis:vAxisX(t, epLabels, rotate),
+        yAxis:vAxisY(t,'ms'),
+        series:[ s('avg',INDIGO,'avg'), s('p50',TEAL,'med'), s('p90',AMBER,'p90'), s('p95',RED,'p95') ]
+      });
+
+      // 5. Checks: HTTP vs Negocio (según vista) — OK / Fallidos con números
+      var vchecks = view.checks || A.checks || [];
+      var cats=[], names=[], okData=[], failData=[];
+      function pushCheck(cat, name, ok, fail){ cats.push(cat); names.push(name); okData.push(ok); failData.push(fail); }
+      if(!isAll && vchecks.length){
+        // Vista de endpoint: una barra por check (HTTP y Negocio)
+        var ordered = vchecks.slice().sort(function(a,b){ return (a.kind==='http'?0:1)-(b.kind==='http'?0:1); });
+        ordered.forEach(function(c){
+          var cat = c.kind==='http' ? 'HTTP' : (c.kind==='business' ? 'Negocio' : 'Otro');
+          pushCheck(cat, c.name, c.passes, c.fails);
+        });
+      } else {
+        // Vista general: agregado por tipo
+        function sumKind(kind){ var p=0,f=0; vchecks.forEach(function(c){ if(c.kind===kind){ p+=c.passes; f+=c.fails; } }); return {p:p,f:f}; }
+        var h=sumKind('http'), b=sumKind('business'), o=sumKind('other');
+        pushCheck('HTTP','Checks HTTP (todos los endpoints)', h.p, h.f);
+        pushCheck('Negocio','Checks de Negocio [UX] (todos los endpoints)', b.p, b.f);
+        if(o.p||o.f) pushCheck('Otros','Otros checks', o.p, o.f);
+      }
+      if(cats.length===0){ pushCheck('Checks','Checks totales', A.kpi.checksPasses, A.kpi.checksFails); }
+      var totalChecks = okData.reduce(function(a,b){return a+b;},0) + failData.reduce(function(a,b){return a+b;},0);
+      mk('chart-errors', {
+        tooltip:{trigger:'axis', axisPointer:{type:'shadow'}, backgroundColor:t.tipBg, borderColor:t.tipBorder, textStyle:{color:t.text},
+          formatter:function(arr){
+            var i=arr[0].dataIndex, ok=okData[i]||0, f=failData[i]||0, tot=ok+f;
+            var rate=tot>0?((ok/tot*100).toFixed(2)):'0.00';
+            return '<b>'+esc(names[i])+'</b><br/>'+
+              '<span style="color:'+GREEN+'">● OK:</span> '+F.num(ok)+'<br/>'+
+              '<span style="color:'+RED+'">● Fallidos:</span> '+F.num(f)+'<br/>'+
+              'Total: '+F.num(tot)+' · Éxito: '+rate+'%';
+          }},
+        toolbox:toolbox(t),
+        legend:{data:['OK','Fallidos'], textStyle:{color:t.axis}, top:0, right:110},
+        grid:vGrid(),
+        xAxis:vAxisX(t, cats, cats.length>2?12:0),
+        yAxis:vAxisY(t,'checks'),
+        series:[
+          {name:'OK', type:'bar', stack:'chk', barWidth:'46%', itemStyle:{color:GREEN, borderRadius:[0,0,0,0]}, emphasis:{focus:'series'},
+            label:{show:true, position:'inside', color:'#06281a', fontWeight:800, fontSize:12, formatter:function(p){return p.value>0?F.num(p.value):'';}},
+            data:okData},
+          {name:'Fallidos', type:'bar', stack:'chk', barWidth:'46%', itemStyle:{color:RED, borderRadius:[5,5,0,0]}, emphasis:{focus:'series'},
+            label:{show:true, position:'top', color:RED, fontWeight:800, fontSize:12, formatter:function(p){return p.value>0?F.num(p.value):'';}},
+            data:failData}
+        ]
+      });
+    }
+    function resize(){ instances.forEach(function(o){ try{o.ch.resize();}catch(e){} }); }
+    function disposeAll(){ instances.forEach(function(o){ try{o.ch.dispose();}catch(e){} }); instances=[]; }
+    return { render:render, resize:resize, dispose:disposeAll, rerenderFlow:rerenderFlow };
+  })();
+
+  // ===================== APP =====================
+  function kpiCard(icon, grad, label, value, sub){
+    return '<div class="kpi"><div class="k-ico" style="background:'+grad+'"><i class="fa-solid '+icon+'"></i></div>'+
+      '<div class="k-label">'+esc(label)+'</div><div class="k-value">'+value+'</div>'+
+      (sub?'<div class="k-sub">'+sub+'</div>':'')+'</div>';
+  }
+  function percCell(label, val, cls){
+    return '<div class="perc '+(cls||'')+'"><div class="p-l">'+label+'</div><div class="p-v">'+(val==null?'N/A':F.ms(val))+'</div></div>';
+  }
+
+  function render(){
+    var A = Parser.parse(RAW);
+    window.__A = A;
+
+    // Status pill
+    var pill = document.getElementById('status-pill');
+    var map = {ok:['ok','fa-circle-check','SLA PASS'],warn:['warn','fa-triangle-exclamation','REVISAR'],fail:['fail','fa-circle-xmark','SLA FAIL']};
+    var st = map[A.status];
+    pill.className = 'status-pill '+st[0];
+    pill.innerHTML = '<i class="fa-solid '+st[1]+'"></i> '+st[2];
+    document.getElementById('status-msg').textContent = A.statusMsg;
+
+    // Meta + tooltip de referencia de latencia por entorno (inyección desde Perú)
+    if(A.meta){
+      var m = A.meta;
+      var metaTxt = (m.fecha_reporte||'') + (m.pais?(' · '+m.pais):'') + (m.sistema_operativo?(' · '+m.sistema_operativo):'') +
+        (m.ciudad?(' · '+m.ciudad):'');
+      var REF = [
+        {env:'test', flag:'PERÚ',   avg:11.15,  med:10.20,  p90:15.92,  p95:17.68,  min:8.60,   max:18.35}
+      ];
+      var rows = REF.map(function(r){
+        return '<tr><td class="env">'+esc(r.env)+'<span class="flag">'+esc(r.flag)+'</span></td>'+
+          '<td>'+r.avg.toFixed(2)+'</td><td>'+r.med.toFixed(2)+'</td><td>'+r.p90.toFixed(2)+'</td>'+
+          '<td>'+r.p95.toFixed(2)+'</td><td>'+r.min.toFixed(2)+'</td><td>'+r.max.toFixed(2)+'</td></tr>';
+      }).join('');
+      var refTable = '<div class="meta-ref">'+
+        '<h4><i class="fa-solid fa-globe" style="color:var(--info)"></i> Latencia de red de referencia por entorno</h4>'+
+        '<div class="rsub">Revisar los tiempos de latencia de acuerdo al servicio desplegado.</div>'+
+        '<table><thead><tr><th>Entorno</th><th>Avg</th><th>Med</th><th>P90</th><th>P95</th><th>Min</th><th>Max</th></tr></thead>'+
+        '<tbody>'+rows+'</tbody></table>'+
+        '<div class="rfoot">Valores en milisegundos (ms). Datos de referencia internos.</div>'+
+        '</div>';
+      document.getElementById('meta-sub').innerHTML =
+        '<span class="meta-ref-wrap" tabindex="0">'+esc(metaTxt)+
+        ' <span class="meta-ref-btn"><i class="fa-solid fa-circle-info"></i>Referencia de red</span>'+
+        refTable+'</span>';
+    }
+
+    // KPIs
+    document.getElementById('kpi-grid').innerHTML =
+      kpiCard('fa-arrow-right-arrow-left','linear-gradient(135deg,#6366f1,#22d3ee)','Total Requests',F.num(A.kpi.totalRequests),F.num(A.kpi.iterations)+' iteraciones') +
+      kpiCard('fa-stopwatch','linear-gradient(135deg,#8b5cf6,#6366f1)','Duración Total',F.dur(A.kpi.durationMs),'tiempo de ejecución') +
+      kpiCard('fa-gauge-high','linear-gradient(135deg,#06b6d4,#2dd4bf)','Throughput (RPS)',F.rate(A.kpi.rps),F.rate(A.kpi.iterRate)+' iter ≈ TPS') +
+      kpiCard('fa-bug','linear-gradient(135deg,'+(A.kpi.errorRate>0?'#ef4444,#f59e0b':'#22c55e,#2dd4bf')+')','Error Rate',F.pct(A.kpi.errorRate),'checks '+F.pct(A.kpi.checksRate)) +
+      kpiCard('fa-users','linear-gradient(135deg,#f59e0b,#ef4444)','Usuarios Virtuales',F.num(A.kpi.vusMax),'VUs máx concurrentes') +
+      kpiCard('fa-database','linear-gradient(135deg,#2dd4bf,#22d3ee)','Datos Recibidos',F.bytes(A.kpi.dataRecv),F.bytes(A.kpi.dataSent)+' enviados');
+
+    // Percentiles por endpoint (uno por cada http_req_duration{endpoint:...})
+    var epSrc = (A.endpoints && A.endpoints.length>0) ? A.endpoints
+      : [{label:'http_req_duration (general)', min:A.perc.min, avg:A.perc.avg, med:A.perc.p50, p90:A.perc.p90, p95:A.perc.p95, max:A.perc.max, count:A.kpi.totalRequests}];
+    document.getElementById('endpoint-perc').innerHTML = epSrc.map(function(e){
+      var strip =
+        percCell('Min', e.min) + percCell('Avg', e.avg) + percCell('P50', e.med) +
+        percCell('P90', e.p90, '') + percCell('P95', e.p95, 'hot') + percCell('Max', e.max, 'crit');
+      var reqBadge = (e.count!=null) ? ('<span class="ep-badge"><i class="fa-solid fa-arrow-right-arrow-left"></i> '+F.num(e.count)+' req</span>') : '';
+      return '<div class="ep-block">'+
+          '<div class="ep-head"><span class="ep-dot"></span><span class="ep-name mono">'+esc(e.label)+'</span>'+reqBadge+'</div>'+
+          '<div class="perc-strip">'+strip+'</div>'+
+        '</div>';
+    }).join('');
+
+    // Selector de vista por endpoint para los gráficos
+    var sel = document.getElementById('endpoint-select');
+    if(sel){
+      sel.innerHTML = (A.views||[]).map(function(v){
+        return '<option value="'+esc(v.id)+'">'+esc(v.label)+'</option>';
+      }).join('');
+      sel.onchange = function(){
+        window.__view = sel.value;
+        Charts.dispose();
+        Charts.render(A, window.__view);
+      };
+    }
+    window.__view = (A.views && A.views[0]) ? A.views[0].id : '__ALL__';
+
+    // Selector de métrica (avg/p90/p95) para el Ciclo de Vida de la Petición
+    var fsel = document.getElementById('flow-metric');
+    if(fsel){
+      fsel.onchange = function(){ Charts.rerenderFlow(fsel.value); };
+    }
+
+    // SLA summary + table
+    document.getElementById('sla-summary').innerHTML =
+      '<div class="sla-chip"><i class="fa-solid fa-shield-halved" style="color:var(--primary-2)"></i> Total SLA <span class="n">'+A.totalTh+'</span></div>'+
+      '<div class="sla-chip"><i class="fa-solid fa-circle-check" style="color:var(--success)"></i> Pasados <span class="n" style="color:var(--success)">'+A.passedTh+'</span></div>'+
+      '<div class="sla-chip"><i class="fa-solid fa-circle-xmark" style="color:var(--danger)"></i> Fallidos <span class="n" style="color:var(--danger)">'+A.failedTh+'</span></div>';
+
+    var slaRows = A.thresholds.map(function(t){
+      return '<tr class="'+(t.ok?'':'row-fail')+'"><td class="mono">'+esc(t.metric)+'</td>'+
+        '<td class="mono">'+esc(t.condition)+'</td>'+
+        '<td><span class="pill '+(t.ok?'pass':'failp')+'"><i class="fa-solid '+(t.ok?'fa-check':'fa-xmark')+'"></i> '+(t.ok?'PASS':'FAIL')+'</span></td></tr>';
+    }).join('');
+    document.getElementById('sla-tbody').innerHTML = slaRows || '<tr><td colspan="3" class="text-muted-2">No se definieron thresholds en esta ejecución.</td></tr>';
+
+    // Errors
+    var errHtml = A.errors.map(function(e){
+      var crit = e.count>0;
+      var color = crit?'#ef4444':'#22c55e';
+      return '<div class="err-card '+(crit?'crit':'')+'"><div class="e-ico" style="background:rgba('+(crit?'239,68,68':'34,197,94')+',.16);color:'+color+'">'+
+        '<i class="fa-solid '+(crit?'fa-fire':'fa-shield-check')+'"></i></div>'+
+        '<div><div class="text-muted-2" style="font-size:12px;font-weight:700">'+esc(e.type)+'</div>'+
+        '<div class="e-count" style="color:'+color+'">'+F.num(e.count)+'</div>'+
+        '<div style="font-size:11px" class="text-muted-2">'+(e.ok?'dentro del umbral':'EXCEDE umbral')+'</div></div></div>';
+    }).join('');
+    document.getElementById('err-grid').innerHTML = errHtml ||
+      '<div class="banner"><i class="fa-solid fa-circle-info"></i><div>No se reportaron categorías de error (api_errors_total) en este JSON.</div></div>';
+    document.getElementById('err-total').textContent = F.num(A.totalApiErrors);
+
+    // Groups & checks
+    var leaf = A.checks.slice().sort(function(a,b){return a.rate-b.rate;});
+    document.getElementById('groups-list').innerHTML = leaf.map(function(c){
+      var color = c.rate>=99?'var(--success)':(c.rate>=90?'var(--warning)':'var(--danger)');
+      return '<div class="grp"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center">'+
+        '<div class="g-name">'+esc(c.name)+'</div>'+
+        '<div style="font-weight:800;color:'+color+'">'+F.pct(c.rate)+'</div></div>'+
+        '<div class="g-path mono">'+esc(c.path)+'</div>'+
+        '<div class="bar-track"><div class="bar-fill" style="width:'+c.rate+'%;background:'+ (c.rate>=99?'linear-gradient(90deg,#22c55e,#2dd4bf)':(c.rate>=90?'linear-gradient(90deg,#f59e0b,#fbbf24)':'linear-gradient(90deg,#ef4444,#f59e0b)')) +'"></div></div>'+
+        '<div style="font-size:11px;margin-top:6px" class="text-muted-2">'+F.num(c.passes)+' OK · '+F.num(c.fails)+' fallidos · '+F.num(c.total)+' total</div></div>';
+    }).join('') || '<div class="text-muted-2">No se registraron checks.</div>';
+
+    // DataTable: todas las métricas
+    var body = A.table.map(function(r){
+      function c(v,fmt){ return '<td>'+(v==null?'<span class="text-muted-2">—</span>':(fmt?fmt(v):v))+'</td>'; }
+      var typeBadge = '<span class="pill '+(r.type==='trend'?'pass':'failp')+'" style="background:rgba(99,102,241,.16);color:var(--primary-2)">'+esc(r.type)+'</span>';
+      return '<tr>'+
+        '<td class="mono">'+esc(r.name)+'</td>'+
+        '<td>'+typeBadge+'</td>'+
+        c(r.avg,F.ms)+c(r.min,F.ms)+c(r.med,F.ms)+c(r.max,F.ms)+
+        c(r.p90,F.ms)+c(r.p95,F.ms)+
+        c(r.count,F.num)+c(r.rate,function(v){return v.toFixed(2);})+
+        '<td>'+(r.hasThreshold?'<i class="fa-solid fa-shield-halved" style="color:var(--primary-2)"></i>':'')+'</td>'+
+        '</tr>';
+    }).join('');
+    document.getElementById('metrics-tbody').innerHTML = body;
+
+    if(window.jQuery && jQuery.fn.DataTable){
+      jQuery('#metrics-table').DataTable({
+        pageLength:15, order:[[0,'asc']],
+        dom:'<"d-flex flex-wrap justify-content-between align-items-center mb-2 gap-2"Bf>rt<"d-flex justify-content-between align-items-center mt-2"ip>',
+        buttons:[
+          {extend:'copyHtml5', text:'<i class="fa-solid fa-copy"></i> Copiar'},
+          {extend:'csvHtml5', text:'<i class="fa-solid fa-file-csv"></i> CSV'},
+          {extend:'excelHtml5', text:'<i class="fa-solid fa-file-excel"></i> Excel'}
+        ],
+        language:{search:'Buscar:',lengthMenu:'Mostrar _MENU_',info:'_START_ a _END_ de _TOTAL_ métricas',
+          paginate:{previous:'Ant',next:'Sig'},zeroRecords:'Sin resultados'}
+      });
+    }
+
+    Charts.render(A, window.__view);
+  }
+
+  // Nav + scrollspy
+  // ===================== GLOSARIO (estático + filtro interactivo) =====================
+  function initGlossary(){
+    var grid = document.getElementById('glossary-grid');
+    var percEl = document.getElementById('glossary-perc');
+    if(!grid) return;
+    var TERMS = [
+      {icon:'⏱️', cat:'respuesta', term:'Tiempo de Respuesta', metric:'http_req_duration',
+        tech:'Tiempo total desde que se envía la solicitud hasta recibir la respuesta completa. Es la suma de todas las fases (cola, conexión, TLS, envío, espera y recepción).',
+        biz:'Lo que espera el usuario para ver el resultado de su acción.',
+        dev:'Si sube, revise primero el TTFB (backend) antes que la red. Es la métrica que más impacta la experiencia percibida.'},
+      {icon:'🖥️', cat:'servidor', term:'Latencia del Backend (TTFB)', metric:'http_req_waiting',
+        tech:'Time To First Byte: tiempo que tarda el servidor en procesar la petición antes de empezar a enviar la respuesta.',
+        biz:'Velocidad de procesamiento de nuestros servidores.',
+        dev:'Indicador clave del rendimiento de la app y la base de datos. Se optimiza con consultas eficientes, índices y caché.'},
+      {icon:'🔗', cat:'red', term:'Conexión TCP', metric:'http_req_connecting',
+        tech:'Tiempo para establecer la conexión de red (TCP handshake) con el servidor.',
+        biz:'Tiempo de conexión inicial con el servidor.',
+        dev:'Alta si hay muchos saltos de red o no se reutilizan conexiones (keep-alive). Normalmente cercana a 0 en conexiones reutilizadas.'},
+      {icon:'🔒', cat:'red', term:'Handshake TLS/SSL', metric:'http_req_tls_handshaking',
+        tech:'Tiempo para negociar la conexión segura HTTPS (certificados y cifrado).',
+        biz:'Tiempo adicional para garantizar la seguridad de la conexión.',
+        dev:'Se reduce reutilizando sesiones TLS (session resumption). Solo aplica en la primera conexión segura.'},
+      {icon:'⏸️', cat:'red', term:'Tiempo en Cola', metric:'http_req_blocked',
+        tech:'Tiempo esperando un slot/socket de conexión disponible (incluye resolución DNS).',
+        biz:'Tiempo de espera antes de poder enviar la solicitud.',
+        dev:'Sube cuando hay poca concurrencia de conexiones disponible o resolución DNS lenta.'},
+      {icon:'📤', cat:'red', term:'Tiempo de Envío', metric:'http_req_sending',
+        tech:'Tiempo para transmitir los datos de la solicitud al servidor.',
+        biz:'Tiempo para enviar la petición.',
+        dev:'Normalmente muy bajo. Aumenta con payloads de subida grandes (cargas, archivos).'},
+      {icon:'📥', cat:'red', term:'Tiempo de Recepción', metric:'http_req_receiving',
+        tech:'Tiempo para descargar la respuesta completa desde el servidor.',
+        biz:'Tiempo para recibir los datos de vuelta.',
+        dev:'Aumenta con respuestas grandes o ancho de banda de bajada limitado.'},
+      {icon:'🔄', cat:'flujo', term:'Duración del Flujo', metric:'group_duration',
+        tech:'Tiempo total para completar un flujo de usuario (grupo de pasos/peticiones).',
+        biz:'Tiempo total de la operación completa de negocio.',
+        dev:'Incluye las pausas (sleep) y todas las peticiones del escenario, no solo una llamada HTTP.'},
+      {icon:'🔁', cat:'flujo', term:'Duración de Iteración', metric:'iteration_duration',
+        tech:'Tiempo total de cada ejecución completa del escenario por usuario virtual.',
+        biz:'Duración completa de cada ciclo de prueba.',
+        dev:'Ciclo completo del VU. Útil para estimar el throughput real (TPS) del escenario.'}
+    ];
+    var PERCS = [
+      {icon:'📈', term:'Percentil 90 (p90)', accent:'var(--info)',
+        desc:'El 90% de las solicitudes responden en este tiempo o menos. Solo el 10% más lento lo supera.',
+        dev:'Buen indicador de la experiencia de la mayoría, ignorando los casos más extremos.'},
+      {icon:'📈', term:'Percentil 95 (p95)', accent:'var(--primary-2)',
+        desc:'El 95% de las solicitudes responden en este tiempo o menos. Es la métrica estándar para definir SLAs.',
+        dev:'Equilibra rigor y estabilidad: captura los lentos sin dejarse dominar por valores atípicos aislados.'},
+      {icon:'📊', term:'Mediana (p50)', accent:'var(--teal)',
+        desc:'El valor "típico": el 50% de las solicitudes están por debajo y el 50% por encima de este tiempo.',
+        dev:'Más representativa que el promedio cuando hay outliers, porque no se distorsiona con valores extremos.'},
+      {icon:'📉', term:'Promedio (avg)', accent:'var(--warning)',
+        desc:'Media aritmética de todos los tiempos. Sencilla, pero sensible a valores extremos (outliers).',
+        dev:'Compárelo siempre con la mediana: si avg >> p50, hay colas lentas tirando del promedio. debe ser minimo la diferencia en todo caso'}
+    ];
+
+    var CATS = [
+      {id:'all', label:'Todos'}, {id:'respuesta', label:'Tiempo de Respuesta'},
+      {id:'servidor', label:'Servidor'}, {id:'red', label:'Red & Conexión'}, {id:'flujo', label:'Flujo'}
+    ];
+    var chipsEl = document.getElementById('gloss-chips');
+    chipsEl.innerHTML = CATS.map(function(c,i){
+      return '<button class="gloss-chip'+(i===0?' active':'')+'" data-cat="'+c.id+'">'+esc(c.label)+'</button>';
+    }).join('');
+
+    grid.innerHTML = TERMS.map(function(g){
+      var txt = (g.term+' '+g.tech+' '+g.biz+' '+g.dev+' '+g.metric).toLowerCase();
+      return '<div class="gloss-card" data-cat="'+g.cat+'" data-text="'+esc(txt)+'" tabindex="0">'+
+        '<div class="g-top"><span class="g-ico">'+g.icon+'</span>'+
+          '<div class="g-head"><div class="g-term">'+esc(g.term)+'</div>'+
+          '<code class="g-metric">'+esc(g.metric)+'</code></div>'+
+          '<i class="fa-solid fa-chevron-down g-caret"></i></div>'+
+        '<div class="g-tech">'+esc(g.tech)+'</div>'+
+        '<div class="g-biz"><span class="g-biz-tag"><i class="fa-solid fa-briefcase"></i> Negocio</span> '+esc(g.biz)+'</div>'+
+        '<div class="g-detail"><div class="g-dev"><span class="g-dev-tag"><i class="fa-solid fa-screwdriver-wrench"></i> Tip técnico</span> '+esc(g.dev)+'</div></div>'+
+        '</div>';
+    }).join('');
+
+    percEl.innerHTML = PERCS.map(function(p){
+      return '<div class="perc-card" style="--ac:'+p.accent+'">'+
+        '<div class="pc-ico">'+p.icon+'</div>'+
+        '<div class="pc-term">'+esc(p.term)+'</div>'+
+        '<div class="pc-desc">'+esc(p.desc)+'</div>'+
+        '<div class="pc-dev"><i class="fa-solid fa-lightbulb"></i> '+esc(p.dev)+'</div>'+
+        '</div>';
+    }).join('');
+
+    // Expandir/colapsar tarjeta al hacer clic
+    Array.prototype.slice.call(grid.querySelectorAll('.gloss-card')).forEach(function(card){
+      function toggle(){ card.classList.toggle('open'); }
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
+    });
+
+    // Filtro: categoría + búsqueda
+    var activeCat = 'all', query = '';
+    var emptyEl = document.getElementById('gloss-empty');
+    function applyFilter(){
+      var cards = grid.querySelectorAll('.gloss-card'), shown = 0;
+      Array.prototype.slice.call(cards).forEach(function(card){
+        var okCat = activeCat==='all' || card.getAttribute('data-cat')===activeCat;
+        var okTxt = !query || card.getAttribute('data-text').indexOf(query)>-1;
+        var vis = okCat && okTxt;
+        card.style.display = vis ? '' : 'none';
+        if(vis) shown++;
+      });
+      emptyEl.style.display = shown===0 ? '' : 'none';
+    }
+    chipsEl.addEventListener('click', function(e){
+      var b = e.target.closest ? e.target.closest('.gloss-chip') : null;
+      if(!b) return;
+      activeCat = b.getAttribute('data-cat');
+      Array.prototype.slice.call(chipsEl.querySelectorAll('.gloss-chip')).forEach(function(c){ c.classList.toggle('active', c===b); });
+      applyFilter();
+    });
+    var search = document.getElementById('gloss-search');
+    if(search) search.addEventListener('input', function(){ query = (search.value||'').toLowerCase().trim(); applyFilter(); });
+  }
+
+  function initNav(){
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link-x'));
+    links.forEach(function(l){
+      l.addEventListener('click', function(){
+        var id=l.getAttribute('data-target');
+        var el=document.getElementById(id);
+        if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+        document.querySelector('.app-sidebar').classList.remove('open');
+      });
+    });
+    var sections = links.map(function(l){return document.getElementById(l.getAttribute('data-target'));});
+    window.addEventListener('scroll', function(){
+      var y=window.scrollY+120, cur=0;
+      sections.forEach(function(s,i){ if(s && s.offsetTop<=y) cur=i; });
+      links.forEach(function(l,i){ l.classList.toggle('active', i===cur); });
+    });
+    var mt=document.getElementById('menu-toggle');
+    if(mt) mt.addEventListener('click', function(){ document.querySelector('.app-sidebar').classList.toggle('open'); });
+  }
+
+  // Theme toggle
+  function initTheme(){
+    var saved = (function(){ try{return localStorage.getItem('k6v2-theme');}catch(e){return null;} })();
+    if(saved) document.documentElement.setAttribute('data-theme', saved);
+    var btn=document.getElementById('theme-toggle');
+    function sync(){
+      var light=document.documentElement.getAttribute('data-theme')==='light';
+      btn.innerHTML = light ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+    }
+    sync();
+    btn.addEventListener('click', function(){
+      var light=document.documentElement.getAttribute('data-theme')==='light';
+      var next= light?'dark':'light';
+      if(next==='dark') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.setAttribute('data-theme','light');
+      try{ localStorage.setItem('k6v2-theme', next); }catch(e){}
+      sync();
+      if(window.__A){ Charts.dispose(); Charts.render(window.__A, window.__view); }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    initTheme(); initNav(); render(); initGlossary();
+    window.addEventListener('resize', function(){ Charts.resize(); });
+  });
+})();
+</script>
+</body>
+</html>

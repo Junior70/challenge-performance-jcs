@@ -1,0 +1,24 @@
+     ✗ Status es 200 o 201
+      ↳  65% — ✓ 3869 / ✗ 2076
+     ✗ Contiene ID
+      ↳  65% — ✓ 3869 / ✗ 2076
+
+     checks...............................: 65.07% ✓ 7738      ✗ 4152 
+     data_received........................: 3.4 MB 56 kB/s
+     data_sent............................: 922 kB 15 kB/s
+     http_req_blocked.....................: avg=2.77ms   min=0s       med=0s       max=169.38ms p(90)=0s       p(95)=0s      
+     http_req_connecting..................: avg=1.32ms   min=0s       med=0s       max=82.13ms  p(90)=0s       p(95)=0s      
+     http_req_duration....................: avg=226.99ms min=201.25ms med=210.61ms max=1.57s    p(90)=235.94ms p(95)=262.51ms
+       { expected_response:true }.........: avg=233.4ms  min=201.25ms med=210.66ms max=1.57s    p(90)=235.24ms p(95)=264.01ms
+     ✓ { name:create_product_endpoint }...: avg=226.99ms min=201.25ms med=210.61ms max=1.57s    p(90)=235.88ms p(95)=262.51ms
+     ✓ { name:login_endpoint }............: avg=249.6ms  min=249.6ms  med=249.6ms  max=249.6ms  p(90)=249.6ms  p(95)=249.6ms 
+   ✗ http_req_failed......................: 34.91% ✓ 2076      ✗ 3870 
+     http_req_receiving...................: avg=593.57µs min=0s       med=0s       max=366.5ms  p(90)=857.25µs p(95)=1.06ms  
+     http_req_sending.....................: avg=170.15µs min=0s       med=0s       max=1.74ms   p(90)=526.75µs p(95)=585.37µs
+     http_req_tls_handshaking.............: avg=1.45ms   min=0s       med=0s       max=92.06ms  p(90)=0s       p(95)=0s      
+     http_req_waiting.....................: avg=226.23ms min=200.47ms med=210.23ms max=1.57s    p(90)=233.44ms p(95)=260.94ms
+     http_reqs............................: 5946   98.077268/s
+     iteration_duration...................: avg=229.83ms min=201.25ms med=210.8ms  max=1.57s    p(90)=241.35ms p(95)=269.66ms
+     iterations...........................: 5945   98.060773/s
+     vus..................................: 26     min=21      max=62 
+     vus_max..............................: 103    min=50      max=103
